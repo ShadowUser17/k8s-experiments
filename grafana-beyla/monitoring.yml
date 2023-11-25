@@ -1,0 +1,15 @@
+apiVersion: "monitoring.coreos.com/v1"
+kind: "PodMonitor"
+metadata:
+  name: "beyla-test-app"
+  namespace: "testing"
+  labels:
+    release: "prom-operator"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "beyla-test-app"
+  podMetricsEndpoints:
+    - port: "metrics"
+      interval: "30s"
+      honorLabels: true
