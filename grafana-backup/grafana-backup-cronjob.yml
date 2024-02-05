@@ -1,0 +1,42 @@
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "grafana-backup-tool"
+  namespace: "testing"
+data:
+  VERIFY_SSL: "False"
+  GRAFANA_URL: "http://prom-operator-grafana.monitoring.svc:80"
+  GRAFANA_TOKEN: "glsa_c42xcSSH98ZKol5NMIacGls3Gxlao8ae_cdc6a6b1"
+  GRAFANA_ADMIN_ACCOUNT: "admin"
+  GRAFANA_ADMIN_PASSWORD: "prom-operator"
+  AWS_ENDPOINT_URL: "http://s3-minio.testing.svc:9000"
+  AWS_S3_BUCKET_NAME: "backups"
+  AWS_S3_BUCKET_KEY: "daily"
+  AWS_DEFAULT_REGION: ""
+  AWS_ACCESS_KEY_ID: "testing"
+  AWS_SECRET_ACCESS_KEY: "1qaz!QAZ"
+
+---
+# https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
+apiVersion: "batch/v1"
+kind: "CronJob"
+metadata:
+  name: "grafana-backup-tool"
+  namespace: "testing"
+spec:
+  schedule: "0 * * * *"
+  jobTemplate:
+    metadata:
+      labels:
+        app: "grafana-backup-tool"
+    spec:
+      template:
+        spec:
+          restartPolicy: "Never"
+          containers:
+            - name: grafana-backup-tool
+              image: "ysde/docker-grafana-backup-tool:1.4.2"
+              imagePullPolicy: "IfNotPresent"
+              envFrom:
+                - configMapRef:
+                    name: "grafana-backup-tool"
