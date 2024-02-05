@@ -1,42 +1,41 @@
-apiVersion: "v1"
-kind: "ConfigMap"
-metadata:
-  name: "grafana-backup-tool"
-  namespace: "testing"
-data:
-  VERIFY_SSL: "False"
-  GRAFANA_URL: "http://prom-operator-grafana.monitoring.svc:80"
-  GRAFANA_TOKEN: "glsa_c42xcSSH98ZKol5NMIacGls3Gxlao8ae_cdc6a6b1"
-  GRAFANA_ADMIN_ACCOUNT: "admin"
-  GRAFANA_ADMIN_PASSWORD: "prom-operator"
-  AWS_ENDPOINT_URL: "http://s3-minio.testing.svc:9000"
-  AWS_S3_BUCKET_NAME: "backups"
-  AWS_S3_BUCKET_KEY: "daily"
-  AWS_DEFAULT_REGION: ""
-  AWS_ACCESS_KEY_ID: "testing"
-  AWS_SECRET_ACCESS_KEY: "1qaz!QAZ"
-
----
-# https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
 apiVersion: "batch/v1"
 kind: "CronJob"
 metadata:
-  name: "grafana-backup-tool"
+  name: "grafana-backup"
   namespace: "testing"
 spec:
-  schedule: "0 * * * *"
+  schedule: "@weekly"
   jobTemplate:
     metadata:
       labels:
-        app: "grafana-backup-tool"
+        app: "grafana-backup"
     spec:
+      backoffLimit: 3
       template:
         spec:
           restartPolicy: "Never"
           containers:
-            - name: grafana-backup-tool
+            - name: "grafana-backup"
               image: "ysde/docker-grafana-backup-tool:1.4.2"
               imagePullPolicy: "IfNotPresent"
-              envFrom:
-                - configMapRef:
-                    name: "grafana-backup-tool"
+              env:
+                - name: "VERIFY_SSL"
+                  value: "False"
+                - name: "GRAFANA_URL"
+                  value: "http://prom-operator-grafana.monitoring.svc:80"
+                - name: "GRAFANA_TOKEN"
+                  value: "glsa_c42xcSSH98ZKol5NMIacGls3Gxlao8ae_cdc6a6b1"
+                - name: "GRAFANA_ADMIN_ACCOUNT"
+                  value: "admin"
+                - name: "GRAFANA_ADMIN_PASSWORD"
+                  value: "prom-operator"
+                - name: "AWS_ENDPOINT_URL"
+                  value: "http://s3-minio.testing.svc:9000"
+                - name: "AWS_S3_BUCKET_NAME"
+                  value: "backups"
+                - name: "AWS_S3_BUCKET_KEY"
+                  value: "grafana"
+                - name: "AWS_ACCESS_KEY_ID"
+                  value: "testing"
+                - name: "AWS_SECRET_ACCESS_KEY"
+                  value: "1qaz!QAZ"
