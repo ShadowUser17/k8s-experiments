@@ -18,6 +18,10 @@ spec:
             - name: "grafana-backup"
               image: "ysde/docker-grafana-backup-tool:1.4.2"
               imagePullPolicy: "IfNotPresent"
+              resources:
+                requests:
+                  cpu: "100m"
+                  memory: "128Mi"
               env:
                 - name: "VERIFY_SSL"
                   value: "False"
