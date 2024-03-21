@@ -3,7 +3,7 @@
 helm repo add kedacore "https://kedacore.github.io/charts" && helm repo update
 ```
 ```bash
-helm install keda "kedacore/keda" -n keda --version "2.13.2" --create-namespace
+helm upgrade --install keda "kedacore/keda" -n keda --version "2.13.2" --create-namespace
 ```
 
 #### Check updates:
