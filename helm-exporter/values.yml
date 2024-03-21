@@ -1,0 +1,13 @@
+serviceMonitor:
+  create: true
+  interval: "30s"
+  additionalLabels:
+    release: "prom-operator"
+
+grafanaDashboard:
+  enabled: true
+
+resources: {}
+
+nodeSelector:
+  kubernetes.io/os: "linux"

@@ -3,7 +3,7 @@
 helm repo add sstarcher "https://shanestarcher.com/helm-charts/" && helm repo update
 ```
 ```bash
-helm install helm-exporter "sstarcher/helm-exporter"
+helm upgrade --install helm-exporter "sstarcher/helm-exporter" -f values.yml -n testing
 ```
 
 #### Check updates:
