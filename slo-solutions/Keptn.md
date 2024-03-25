@@ -17,6 +17,20 @@ helm upgrade --install keptn "keptn/keptn" -f keptn-values.yml -n keptn-system -
 kubectl apply -f keptn-monitor.yml
 ```
 
+#### Create dashboards:
+```bash
+kubectl apply -f "https://raw.githubusercontent.com/keptn/lifecycle-toolkit/main/examples/support/observability/config/prometheus/grafana-dashboard-keptn-applications.yaml"
+```
+```bash
+kubectl apply -f "https://raw.githubusercontent.com/keptn/lifecycle-toolkit/main/examples/support/observability/config/prometheus/grafana-dashboard-keptn-overview.yaml"
+```
+```bash
+kubectl apply -f "https://raw.githubusercontent.com/keptn/lifecycle-toolkit/main/examples/support/observability/config/prometheus/grafana-dashboard-keptn-workloads.yaml"
+```
+```bash
+kubectl -n monitoring label cm grafana_dashboard=1 -l grafana_dashboard=0 --overwrite
+```
+
 #### Check updates:
 ```bash
 helm search repo "keptn/keptn"
