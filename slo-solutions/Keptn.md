@@ -12,6 +12,11 @@ helm repo add keptn "https://charts.lifecycle.keptn.sh" && helm repo update
 helm upgrade --install keptn "keptn/keptn" -f keptn-values.yml -n keptn-system --version "0.5.2" --wait
 ```
 
+#### Enable monitoring:
+```bash
+kubectl apply -f keptn-monitor.yml
+```
+
 #### Check updates:
 ```bash
 helm search repo "keptn/keptn"
