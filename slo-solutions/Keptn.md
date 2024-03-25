@@ -9,7 +9,7 @@ kubectl apply -f keptn-certs.yml
 helm repo add keptn "https://charts.lifecycle.keptn.sh" && helm repo update
 ```
 ```bash
-helm upgrade --install keptn "keptn/keptn" -f keptn-values.yml -n keptn-system --wait
+helm upgrade --install keptn "keptn/keptn" -f keptn-values.yml -n keptn-system --version "0.5.2" --wait
 ```
 
 #### Check updates:
@@ -20,6 +20,11 @@ helm search repo "keptn/keptn"
 #### Get default values:
 ```bash
 helm show values "keptn/keptn" > keptn-defaults.yml
+```
+
+#### Get API resources:
+```bash
+kubectl api-resources | grep keptn.sh
 ```
 
 #### URLs:
