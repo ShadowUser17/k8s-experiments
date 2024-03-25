@@ -1,9 +1,15 @@
 #### Deploy to cluster:
 ```bash
+kubectl create namespace keptn-system
+```
+```bash
+kubectl apply -f keptn-certs.yml
+```
+```bash
 helm repo add keptn "https://charts.lifecycle.keptn.sh" && helm repo update
 ```
 ```bash
-helm upgrade --install keptn "keptn/keptn" -n keptn-system --create-namespace --wait
+helm upgrade --install keptn "keptn/keptn" -f keptn-values.yml -n keptn-system --wait
 ```
 
 #### Check updates:

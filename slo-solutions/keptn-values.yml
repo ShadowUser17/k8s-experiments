@@ -1,0 +1,10 @@
+global:
+  certManagerEnabled: false
+  caInjectionAnnotations:
+    cert-manager.io/inject-ca-from: "keptn-system/keptn-certs"
+
+lifecycleOperator:
+  enabled: true
+
+metricsOperator:
+  enabled: true
