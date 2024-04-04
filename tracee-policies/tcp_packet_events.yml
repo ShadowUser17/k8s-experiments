@@ -1,9 +1,0 @@
-apiVersion: "tracee.aquasec.com/v1beta1"
-kind: "Policy"
-metadata:
-  name: "tcp-packet-events"
-spec:
-  scope: ["container"]
-  rules:
-    - event: "net_packet_tcp"
-      filters: []
