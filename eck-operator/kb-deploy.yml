@@ -1,0 +1,41 @@
+apiVersion: "networking.k8s.io/v1"
+kind: "Ingress"
+metadata:
+  name: "kibana"
+  namespace: "monitoring"
+  annotations:
+    cert-manager.io/cluster-issuer: "k8s-cluster-issuer"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: "nginx"
+  tls:
+    - hosts: ["kibana.k3s"]
+      secretName: "kibana-cert"
+  rules:
+    - host: "kibana.k3s"
+      http:
+        paths:
+          - path: "/"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "kibana-kb-http"
+                port:
+                  number: 5601
+
+---
+apiVersion: "kibana.k8s.elastic.co/v1"
+kind: "Kibana"
+metadata:
+  name: "kibana"
+  namespace: "monitoring"
+spec:
+  version: "8.10.4"
+  count: 1
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  elasticsearchRef:
+    name: "es"
+    namespace: "monitoring"
