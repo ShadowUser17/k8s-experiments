@@ -1,0 +1,32 @@
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: false
+
+operator:
+  replicas: 1
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+
+hubble:
+  enabled: true
+  metrics:
+    enableOpenMetrics: true
+    enabled:
+      - "dns"
+      - "tcp"
+      - "icmp"
+      - "flow"
+      - "drop"
+      - "httpV2"
+      - "port-distribution"
+    serviceMonitor:
+      enabled: false
+  relay:
+    enabled: true
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: false

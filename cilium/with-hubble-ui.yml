@@ -1,0 +1,46 @@
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    labels:
+      release: "prom-operator"
+
+operator:
+  replicas: 1
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      labels:
+        release: "prom-operator"
+
+hubble:
+  enabled: true
+  metrics:
+    enableOpenMetrics: true
+    enabled:
+      - "dns"
+      - "tcp"
+      - "icmp"
+      - "flow"
+      - "drop"
+      - "httpV2"
+      - "port-distribution"
+    serviceMonitor:
+      enabled: true
+      labels:
+        release: "prom-operator"
+  relay:
+    enabled: true
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        labels:
+          release: "prom-operator"
+  ui:
+    enabled: true
+    ingress:
+      enabled: true
+      hosts: ["hubble.k3s"]
+      className: "nginx"
