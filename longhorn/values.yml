@@ -1,0 +1,27 @@
+persistence:
+  defaultClass: true
+  defaultFsType: "ext4"
+  reclaimPolicy: "Delete"
+  defaultDataLocality: "disabled"
+  defaultClassReplicaCount: 1
+
+defaultSettings:
+  defaultReplicaCount: 1
+
+csi:
+  resizerReplicaCount: 2
+  attacherReplicaCount: 2
+  snapshotterReplicaCount: 2
+  provisionerReplicaCount: 2
+
+longhornUI:
+  replicas: 1
+
+longhornConversionWebhook:
+  replicas: 1
+
+longhornAdmissionWebhook:
+  replicas: 1
+
+longhornRecoveryBackend:
+  replicas: 1
