@@ -1,0 +1,34 @@
+prometheus:
+  url: "http://prom-operator-kube-prometh-prometheus.monitoring.svc"
+  port: 9090
+  path: ""
+
+resources: {}
+
+nodeSelector:
+  kubernetes.io/os: "linux"
+
+rules:
+  default: false
+  custom:
+    - seriesQuery: '{__name__=~"^container_network_.*_total", namespace!="", pod!=""}'
+      resources:
+        template: "<<.Resource>>"
+      name:
+        matches: "^container_(.*)"
+        as: "${1}"
+      metricsQuery: 'sum(irate(<<.Series>>{<<.LabelMatchers>>}[1m])) by(<<.GroupBy>>)'
+
+    - seriesQuery: '{__name__="nginx_ingress_controller_requests", ingress!=""}'
+      resources:
+        template: "<<.Resource>>"
+      name:
+        as: "ingress_requests_total"
+      metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m]) * 60) by(<<.GroupBy>>)'
+
+    # - seriesQuery: '{__name__="envoy_server_total_connections", namespace!="", pod!=""}'
+    #   resources:
+    #     template: "<<.Resource>>"
+    #   name:
+    #     as: "server_connections_total"
+    #   metricsQuery: 'sum(<<.Series>>{<<.LabelMatchers>>}) by(<<.GroupBy>>)'
