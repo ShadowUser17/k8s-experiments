@@ -1,0 +1,14 @@
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8080"
+
+nodeSelector:
+  kubernetes.io/os: linux
+
+tolerations:
+  - operator: "Exists"
+
+metrics:
+  create: true
+  labels:
+    release: "prom-operator"
