@@ -12,12 +12,12 @@ helm upgrade --install longhorn "longhorn/longhorn" -f values.yml -n longhorn-sy
 
 #### Create ingress:
 ```bash
-kubectl apply -f "https://raw.githubusercontent.com/ShadowUser17/BasicInstalls/master/kubernetes-operators/longhorn/frontend-ingress.yml"
+kubectl apply -f ./frontend-ingress.yml
 ```
 
 #### Enable monitoring:
 ```bash
-kubectl apply -f "https://raw.githubusercontent.com/ShadowUser17/BasicInstalls/master/kubernetes-operators/longhorn/prom-operator.yml"
+kubectl apply -f ./prom-operator.yml
 ```
 
 #### Get API resources:
