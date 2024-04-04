@@ -1,0 +1,43 @@
+apiVersion: "logging.banzaicloud.io/v1beta1"
+kind: "ClusterOutput"
+metadata:
+  name: "loki-output"
+  namespace: "monitoring"
+spec:
+  loki:
+    url: "http://loki.monitoring.svc:3100"
+    configure_kubernetes_labels: true
+    buffer:
+      timekey: "1m"
+      timekey_wait: "30s"
+      timekey_use_utc: true
+
+---
+apiVersion: "logging.banzaicloud.io/v1beta1"
+kind: "ClusterFlow"
+metadata:
+  name: "loki-flow"
+  namespace: "monitoring"
+spec:
+  globalOutputRefs: ["loki-output"]
+  filters:
+    - tag_normaliser: {}
+  match:
+    - select:
+        labels:
+          app.kubernetes.io/name: "loki"
+    - select:
+        labels:
+          app.kubernetes.io/name: "tetragon"
+    - select:
+        labels:
+          app.kubernetes.io/name: "echo-server"
+    - select:
+        labels:
+          app.kubernetes.io/name: "host-tailer"
+    - select:
+        labels:
+          app.kubernetes.io/name: "event-tailer"
+    - select:
+        labels:
+          app.kubernetes.io/name: "ingress-nginx"

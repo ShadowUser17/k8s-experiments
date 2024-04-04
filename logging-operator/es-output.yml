@@ -1,0 +1,49 @@
+apiVersion: "logging.banzaicloud.io/v1beta1"
+kind: "ClusterOutput"
+metadata:
+  name: "es-output"
+  namespace: "monitoring"
+spec:
+  elasticsearch:
+    host: "es-es-http.monitoring.svc"
+    port: 9200
+    scheme: "https"
+    ssl_verify: false
+    ssl_version: "TLSv1_2"
+    user: "elastic"
+    password:
+      valueFrom:
+        secretKeyRef:
+          name: "es-es-elastic-user"
+          key: "elastic"
+    buffer:
+      timekey: "1m"
+      timekey_wait: "30s"
+      timekey_use_utc: true
+
+---
+apiVersion: "logging.banzaicloud.io/v1beta1"
+kind: "ClusterFlow"
+metadata:
+  name: "es-flow"
+  namespace: "monitoring"
+spec:
+  globalOutputRefs: ["es-output"]
+  filters:
+    - tag_normaliser: {}
+  match:
+    - select:
+        labels:
+          app.kubernetes.io/name: "tetragon"
+    - select:
+        labels:
+          app.kubernetes.io/name: "echo-server"
+    - select:
+        labels:
+          app.kubernetes.io/name: "host-tailer"
+    - select:
+        labels:
+          app.kubernetes.io/name: "event-tailer"
+    - select:
+        labels:
+          app.kubernetes.io/name: "ingress-nginx"

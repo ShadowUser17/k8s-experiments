@@ -1,0 +1,10 @@
+replicaCount: 1
+
+app:
+  eventPerSec: 1
+
+api:
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      release: "prom-operator"

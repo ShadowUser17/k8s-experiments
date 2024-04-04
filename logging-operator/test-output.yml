@@ -1,0 +1,27 @@
+apiVersion: "logging.banzaicloud.io/v1beta1"
+kind: "Output"
+metadata:
+  name: "test-output"
+  namespace: "testing"
+spec:
+  http:
+    endpoint: "http://echo-server.testing.svc:8080/"
+    content_type: "application/json"
+    buffer:
+      type: "memory"
+      tags: "time"
+      timekey: "1s"
+      timekey_wait: "0s"
+
+---
+apiVersion: "logging.banzaicloud.io/v1beta1"
+kind: "Flow"
+metadata:
+  name: "test-flow"
+  namespace: "testing"
+spec:
+  localOutputRefs: ["test-output"]
+  match:
+    - select:
+        labels:
+          app.kubernetes.io/name: "log-generator"
