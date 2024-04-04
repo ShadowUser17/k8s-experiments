@@ -1,0 +1,24 @@
+containerRuntime: "containerd"
+fluentbit:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "2020"
+    prometheus.io/path: "/api/v1/metrics/prometheus"
+  output:
+    loki:
+      enable: true
+      host: "loki.monitoring.svc"
+      port: 3100
+      httpUser: ""
+      httpPassword: ""
+  prometheusMetricsExporter:
+    match: "fb.metrics"
+    metricsExporter:
+      host: "0.0.0.0"
+      port: 2020
+      addLabels:
+        app: "fluentbit"
+  nodeSelector:
+    kubernetes.io/os: "linux"
+  tolerations:
+    - operator: "Exists"
