@@ -1,7 +1,0 @@
-installCRDs: true
-
-startupapicheck:
-  enabled: false
-
-prometheus:
-  enabled: true
