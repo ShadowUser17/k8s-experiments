@@ -26,16 +26,9 @@ helm template cilium "cilium/cilium" -f values.yml -n kube-system --version "1.1
 kubectl api-resources | grep cilium
 ```
 
-#### Install Cilium CLI:
+#### Show Cilium logs:
 ```bash
-curl -L "https://github.com/cilium/cilium-cli/releases/download/v${version}/cilium-linux-amd64.tar.gz" -o cilium-linux.tgz && \
-tar -xzf cilium-linux.tgz cilium && mv ./cilium /usr/local/bin/ && rm -f ./cilium-linux.tgz
-```
-
-#### Install Hubble CLI:
-```bash
-curl -L "https://github.com/cilium/hubble/releases/download/v${version}/hubble-linux-amd64.tar.gz" -o hubble-linux.tgz && \
-tar -xzf hubble-linux.tgz hubble && mv ./hubble /usr/local/bin/ && rm -f ./hubble-linux.tgz
+kubectl -n kube-system exec <pod> -c cilium-agent -- hubble observe
 ```
 
 #### Validate Cilium:
@@ -54,6 +47,18 @@ cilium hubble port-forward &
 ```
 ```bash
 hubble status
+```
+
+#### Install Cilium CLI:
+```bash
+curl -L "https://github.com/cilium/cilium-cli/releases/download/v0.16.4/cilium-linux-amd64.tar.gz" -o cilium-linux.tgz && \
+tar -xzf cilium-linux.tgz cilium && mv ./cilium /usr/local/bin/ && rm -f ./cilium-linux.tgz
+```
+
+#### Install Hubble CLI:
+```bash
+curl -L "https://github.com/cilium/hubble/releases/download/v0.13.2/hubble-linux-amd64.tar.gz" -o hubble-linux.tgz && \
+tar -xzf hubble-linux.tgz hubble && mv ./hubble /usr/local/bin/ && rm -f ./hubble-linux.tgz
 ```
 
 #### Docs:
