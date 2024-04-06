@@ -16,9 +16,14 @@ collectors:
 falco:
   grpc:
     enabled: true
+    threadiness: 8
     bind_address: "unix:///run/falco/falco.sock"
   grpc_output:
     enabled: true
+  rules_file:
+    - "/etc/falco/rules.d"
+    - "/etc/falco/falco_rules.yaml"
+    - "/etc/falco/k8s_audit_rules.yaml"
   metrics:
     enabled: true
     interval: "15m"
