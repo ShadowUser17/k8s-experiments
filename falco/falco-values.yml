@@ -1,0 +1,45 @@
+tty: true
+
+driver:
+  kind: "modern_ebpf"
+
+collectors:
+  crio:
+    enabled: true
+  docker:
+    enabled: false
+  containerd:
+    enabled: true
+  kubernetes:
+    enabled: false
+
+falco:
+  grpc:
+    enabled: true
+    bind_address: "unix:///run/falco/falco.sock"
+  grpc_output:
+    enabled: true
+  metrics:
+    enabled: true
+    interval: "15m"
+    output_rule: true
+    libbpf_stats_enabled: true
+    convert_memory_to_mb: true
+    include_empty_values: true
+    state_counters_enabled: true
+    resource_utilization_enabled: true
+    kernel_event_counters_enabled: true
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "192Mi"
+  limits:
+    cpu: "200m"
+    memory: "512Mi"
+
+nodeSelector:
+  kubernetes.io/os: "linux"
+
+tolerations:
+  - operator: "Exists"

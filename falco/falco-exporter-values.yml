@@ -1,0 +1,17 @@
+resources:
+  requests:
+    memory: "32Mi"
+  limits:
+    memory: "64Mi"
+
+serviceMonitor:
+  enabled: true
+  interval: "30s"
+  additionalLabels:
+    release: "prom-operator"
+
+nodeSelector:
+  kubernetes.io/os: "linux"
+
+tolerations:
+  - operator: "Exists"

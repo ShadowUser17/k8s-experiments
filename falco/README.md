@@ -3,13 +3,13 @@
 helm repo add falco "https://falcosecurity.github.io/charts" && helm repo update
 ```
 ```bash
-kubectl create namespace falcosecurity
+kubectl create namespace falco
 ```
 ```bash
-helm upgrade --install falco "falco/falco" -f falco-values.yml -n falcosecurity --version "4.2.5"
+helm upgrade --install falco "falco/falco" -f falco-values.yml -n falco --version "4.2.5"
 ```
 ```bash
-helm upgrade --install falco-exporter "falco/falco-exporter" -f falco-exporter-values.yml -n falcosecurity --version "0.9.11"
+helm upgrade --install falco-exporter "falco/falco-exporter" -f falco-exporter-values.yml -n falco --version "0.9.11"
 ```
 
 #### Check updates:
