@@ -1,4 +1,2 @@
 grafana-backup/backups
 grafana-backup/env
-*/.terraform
-*/terraform.tfstate.backup
