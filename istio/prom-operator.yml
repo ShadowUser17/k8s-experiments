@@ -1,0 +1,53 @@
+apiVersion: "monitoring.coreos.com/v1"
+kind: "PodMonitor"
+metadata:
+  name: "istio-sidecars"
+  namespace: "istio-system"
+  labels:
+    release: "prom-operator"
+spec:
+  selector:
+    matchLabels:
+      security.istio.io/tlsMode: "istio"
+  namespaceSelector:
+    any: true
+  podMetricsEndpoints:
+    - port: "http-envoy-prom"
+      path: "/stats/prometheus"
+      interval: "30s"
+      honorLabels: true
+
+# ---
+# apiVersion: "monitoring.coreos.com/v1"
+# kind: "ServiceMonitor"
+# metadata:
+#   name: "istio-ingressgateway"
+#   namespace: "istio-system"
+#   labels:
+#     release: "prom-operator"
+# spec:
+#   selector:
+#     matchLabels:
+#       istio: "ingressgateway"
+#   endpoints:
+#     - port: "http-envoy-prom"
+#       path: "/stats/prometheus"
+#       interval: "30s"
+#       honorLabels: true
+
+---
+apiVersion: "monitoring.coreos.com/v1"
+kind: "ServiceMonitor"
+metadata:
+  name: "istiod"
+  namespace: "istio-system"
+  labels:
+    release: "prom-operator"
+spec:
+  selector:
+    matchLabels:
+      istio: "pilot"
+  endpoints:
+    - port: "http-monitoring"
+      interval: "30s"
+      honorLabels: true
