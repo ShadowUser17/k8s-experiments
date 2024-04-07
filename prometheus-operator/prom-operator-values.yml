@@ -1,0 +1,171 @@
+prometheusOperator:
+  enabled: true
+  serviceMonitor:
+    interval: "1m"
+  admissionWebhooks:
+    certManager:
+      enabled: true
+      issuerRef:
+        name: "k8s-cluster-issuer"
+        kind: "ClusterIssuer"
+
+alertmanager:
+  enabled: true
+  ingress:
+    enabled: true
+    hosts: ["alertmanager.k3s"]
+    ingressClassName: "nginx"
+  serviceMonitor:
+    interval: "1m"
+  alertmanagerSpec:
+    retention: "8h"
+    image:
+      registry: "quay.io"
+      repository: "prometheus/alertmanager"
+      tag: "v0.27.0"
+    alertmanagerConfigSelector:
+      matchLabels:
+        release: "prom-operator"
+    alertmanagerConfigMatcherStrategy:
+      type: "None"
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          storageClassName: "local-path"
+          resources:
+            requests:
+              storage: "512Mi"
+
+prometheus:
+  enabled: true
+  ingress:
+    enabled: true
+    hosts: ["prometheus.k3s"]
+    ingressClassName: "nginx"
+  serviceMonitor:
+    interval: "1m"
+  prometheusSpec:
+    retention: "7d"
+    podMetadata:
+      annotations:
+        promtail.io/collect: "true"
+    image:
+      registry: "quay.io"
+      repository: "prometheus/prometheus"
+      tag: "v2.51.1"
+    resources:
+      requests:
+        memory: "850Mi"
+      limits:
+        memory: "850Mi"
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          storageClassName: "local-path"
+          resources:
+            requests:
+              storage: "8Gi"
+
+# Using default values from https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
+grafana:
+  enabled: true
+  adminPassword: "prom-operator"
+  assertNoLeakedSecrets: false
+  image:
+    registry: "docker.io"
+    repository: "grafana/grafana"
+    tag: "10.1.9"
+  additionalDataSources:
+    - name: "Loki"
+      type: "loki"
+      access: "proxy"
+      url: "http://loki.monitoring.svc:3100"
+      jsonData:
+        timeout: 300
+        maxLines: 2000
+  serviceMonitor:
+    interval: "1m"
+  ingress:
+    enabled: true
+    hosts: ["grafana.k3s"]
+    ingressClassName: "nginx"
+    annotations:
+      cert-manager.io/cluster-issuer: "k8s-cluster-issuer"
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    tls:
+      - secretName: "prom-grafana-tls"
+        hosts: ["grafana.k3s"]
+  persistence:
+    enabled: true
+    type: "sts"
+    size: "1Gi"
+    accessModes: ["ReadWriteOnce"]
+    storageClassName: "local-path"
+
+# Using default values from https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-state-metrics/values.yaml
+kube-state-metrics:
+  image:
+    registry: "registry.k8s.io"
+    repository: "kube-state-metrics/kube-state-metrics"
+    tag: "v2.12.0"
+  prometheus:
+    monitor:
+      interval: "30s"
+  metricLabelsAllowlist:
+    - 'nodes=[node.kubernetes.io/instance-type,node-role.kubernetes.io/control-plane,node-role.kubernetes.io/master]'
+    - 'pods=[app.kubernetes.io/name]'
+    - 'ingresses=[app.kubernetes.io/name]'
+
+# Using default values from https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus-node-exporter/values.yaml
+prometheus-node-exporter:
+  image:
+    registry: "quay.io"
+    repository: "prometheus/node-exporter"
+    tag: "v1.7.0"
+  prometheus:
+    monitor:
+      interval: "30s"
+
+coreDns:
+  serviceMonitor:
+    interval: "1m"
+
+kubelet:
+  serviceMonitor:
+    interval: "30s"
+
+kubeApiServer:
+  serviceMonitor:
+    interval: "30s"
+
+kubeControllerManager:
+  enabled: false
+  serviceMonitor:
+    interval: "30s"
+
+kubeScheduler:
+  enabled: false
+  serviceMonitor:
+    interval: "30s"
+
+kubeProxy:
+  enabled: false
+  serviceMonitor:
+    interval: "30s"
+
+kubeEtcd:
+  enabled: false
+  serviceMonitor:
+    interval: "30s"
+
+defaultRules:
+  create: true
+  rules:
+    kubeProxy: false
+    windows: false
+    etcd: false
+    kubeControllerManager: false
+    kubeSchedulerAlerting: false
+    kubeSchedulerRecording: false
