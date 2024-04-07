@@ -1,7 +1,7 @@
 tty: true
 
 driver:
-  kind: "modern_ebpf"
+  kind: "ebpf"
 
 collectors:
   crio:
@@ -39,12 +39,16 @@ falcoctl:
           - "k8saudit-rules:0.7"
 
 falco:
+  log_syslog: false
+  json_output: true
   grpc:
     enabled: true
     threadiness: 8
     bind_address: "unix:///run/falco/falco.sock"
   grpc_output:
     enabled: true
+  syslog_output:
+    enabled: false
   rules_file:
     - "/etc/falco/rules.d"
     - "/etc/falco/falco_rules.yaml"
@@ -78,6 +82,9 @@ resources:
   limits:
     cpu: "200m"
     memory: "512Mi"
+
+podAnnotations:
+  promtail.io/collect: "true"
 
 nodeSelector:
   kubernetes.io/os: "linux"
