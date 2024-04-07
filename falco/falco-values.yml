@@ -13,6 +13,31 @@ collectors:
   kubernetes:
     enabled: false
 
+services:
+  - name: "k8saudit-webhook"
+    type: "NodePort"
+    ports:
+      - port: 9765
+        nodePort: 30007
+        protocol: "TCP"
+
+falcoctl:
+  artifact:
+    install:
+      enabled: true
+    follow:
+      enabled: true
+  config:
+    artifact:
+      install:
+        refs:
+          - "falco-rules:3"
+          - "k8saudit-rules:0.7"
+      follow:
+        refs:
+          - "falco-rules:3"
+          - "k8saudit-rules:0.7"
+
 falco:
   grpc:
     enabled: true
@@ -24,6 +49,17 @@ falco:
     - "/etc/falco/rules.d"
     - "/etc/falco/falco_rules.yaml"
     - "/etc/falco/k8s_audit_rules.yaml"
+  plugins:
+    - name: "k8saudit"
+      library_path: "libk8saudit.so"
+      open_params: "http://:9765/k8s-audit"
+      init_config: ""
+    - name: "json"
+      library_path: "libjson.so"
+      init_config: ""
+  load_plugins:
+    - "k8saudit"
+    - "json"
   metrics:
     enabled: true
     interval: "15m"
