@@ -6,7 +6,7 @@ helm repo add bitnami "https://charts.bitnami.com/bitnami" && helm repo update
 kubectl create namespace testing
 ```
 ```bash
-helm upgrade --install cache "bitnami/redis" -f ./values/redis.yml -n testing --version "19.0.2"
+helm upgrade --install cache "bitnami/redis" -f values.yml -n testing --version "19.0.2"
 ```
 
 #### Check updates:
@@ -16,12 +16,12 @@ helm search repo "bitnami/redis"
 
 #### Get default values:
 ```bash
-helm show values "bitnami/redis" > redis-default.yml
+helm show values "bitnami/redis" > default-values.yml
 ```
 
 #### Export manifests:
 ```bash
-helm template cache "bitnami/redis" -f ./values/redis.yml -n testing --version "19.0.2" > redis-manifests.yml
+helm template cache "bitnami/redis" -f values.yml -n testing --version "19.0.2" > manifests.yml
 ```
 
 #### Delete volumes:
