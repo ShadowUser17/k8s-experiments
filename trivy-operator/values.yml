@@ -1,0 +1,34 @@
+operator:
+  replicas: 1
+  scanJobsConcurrentLimit: 4
+  clusterComplianceEnabled: true
+  configAuditScannerEnabled: true
+  vulnerabilityScannerEnabled: true
+  rbacAssessmentScannerEnabled: true
+  infraAssessmentScannerEnabled: true
+
+trivy:
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "128M"
+    limits:
+      cpu: "200m"
+      memory: "512M"
+
+trivyOperator:
+  scanJobTolerations:
+    - operator: "Exists"
+  scanJobNodeSelector:
+    kubernetes.io/os: "linux"
+
+service:
+  metricsPort: 8080
+  annotations:
+    prometheus.io/scrape: "true"
+
+serviceMonitor:
+  enabled: true
+  interval: "1m"
+  labels:
+    release: "prom-operator"
