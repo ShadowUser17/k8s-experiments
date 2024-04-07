@@ -1,0 +1,36 @@
+replicaCount: 1
+nodeSelector:
+  kubernetes.io/os: "linux"
+
+manager:
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "100m"
+      memory: "128Mi"
+  serviceMonitor:
+    enabled: true
+    extraLabels:
+      release: "prom-operator"
+
+kubeRBACProxy:
+  enabled: true
+  resources:
+    requests:
+      cpu: "10m"
+      memory: "64Mi"
+    limits:
+      cpu: "500m"
+      memory: "128Mi"
+
+admissionWebhooks:
+  certManager:
+    enabled: true
+    issuerRef:
+      name: "k8s-cluster-issuer"
+      kind: "ClusterIssuer"
+  autoGenerateCert:
+    enabled: true
+    recreate: true
