@@ -1,0 +1,68 @@
+global:
+  domain: "argocd.k3s"
+
+configs:
+  params:
+    server.insecure: true
+
+controller:
+  resources: {}
+  podAnnotations: {}
+  metrics:
+    enabled: true
+
+server:
+  resources: {}
+  podAnnotations: {}
+  metrics:
+    enabled: true
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+    annotations:
+      cert-manager.io/cluster-issuer: "k8s-cluster-issuer"
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    extraTls:
+      - hosts: ["argocd.k3s"]
+        secretName: "argocd-server-tls"
+
+repoServer:
+  resources: {}
+  podAnnotations: {}
+  metrics:
+    enabled: true
+
+applicationSet:
+  resources: {}
+  podAnnotations: {}
+  metrics:
+    enabled: true
+
+notifications:
+  enabled: false
+  resources: {}
+  podAnnotations: {}
+  metrics:
+    enabled: true
+
+dex:
+  enabled: false
+  resources: {}
+  podAnnotations: {}
+  metrics:
+    enabled: true
+
+redis:
+  enabled: true
+  resources: {}
+  podAnnotations: {}
+  exporter:
+    enabled: true
+  metrics:
+    enabled: true
+
+# externalRedis:
+#   host: ""
+#   port: 6379
+#   existingSecret: ""
