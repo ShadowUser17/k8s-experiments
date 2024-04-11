@@ -1,0 +1,17 @@
+serviceAccount:
+  create: true
+  name: "karpenter"
+  # annotations:
+  #   eks.amazonaws.com/role-arn: "XXXX"
+
+podAnnotations:
+  promtail.io/collect: "true"
+
+controller:
+  resources:
+    requests:
+      cpu: "1"
+      memory: "1G"
+    limits:
+      cpu: "1"
+      memory: "1G"
