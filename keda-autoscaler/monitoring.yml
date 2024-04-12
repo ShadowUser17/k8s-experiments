@@ -1,0 +1,19 @@
+apiVersion: "monitoring.coreos.com/v1"
+kind: "ServiceMonitor"
+metadata:
+  name: "keda-monitor"
+  namespace: "monitoring"
+  labels:
+    release: "prom-operator"
+spec:
+  namespaceSelector:
+    matchNames:
+      - "keda"
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: "keda"
+      app.kubernetes.io/part-of: "keda-operator"
+  endpoints:
+    - port: "metrics"
+      interval: "30s"
+      honorLabels: true
