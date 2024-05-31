@@ -15,6 +15,14 @@ helm repo add argocd "https://argoproj.github.io/argo-helm" && helm repo update
 helm upgrade --install argo-workflows "argocd/argo-workflows" -f values.yml -n argo-workflows --version "0.41.7"
 ```
 
+#### Get access:
+```bash
+kubectl apply -f argo-workflows-ui.yml
+```
+```bash
+kubectl -n argo-workflows get secret argo-workflows-ui.service-account-token -o go-template='{{"Bearer "}}{{.data.token|base64decode}}{{"\n"}}'
+```
+
 #### Enable monitoring:
 ```bash
 kubectl apply -f monitoring.yml
