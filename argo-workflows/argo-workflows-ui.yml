@@ -3,9 +3,46 @@ kind: "ClusterRole"
 metadata:
   name: "argo-workflows-ui"
 rules:
-- apiGroups: ["argoproj.io"]
-  resources: ["workflows"]
-  verbs: ["list", "update"]
+  - apiGroups: [""]
+    resources:
+      - "pods"
+      - "events"
+      - "pods/log"
+      - "namespaces"
+    verbs: ["list", "get", "watch"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["workflows"]
+    verbs: ["list", "get", "watch"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["sensors"]
+    verbs: ["list", "get", "watch"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["eventbus"]
+    verbs: ["list", "get", "watch"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["eventsources"]
+    verbs: ["list", "get", "watch"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["workfloweventbindings"]
+    verbs: ["list", "get", "watch"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["cronworkflows"]
+    verbs: ["list", "get", "watch"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["workflowtemplates"]
+    verbs: ["list", "get", "watch"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["clusterworkflowtemplates"]
+    verbs: ["list", "get", "watch"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["workflowtasksets"]
+    verbs: ["list", "get", "watch"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["workflowtaskresults"]
+    verbs: ["list", "get", "watch"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["workflowartifactgctasks"]
+    verbs: ["list", "get", "watch"]
 
 ---
 apiVersion: "v1"
