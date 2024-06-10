@@ -28,6 +28,16 @@ kubectl -n argo-workflows get secret argo-workflows-ui.service-account-token -o 
 kubectl apply -f monitoring.yml
 ```
 
+#### Auto delete for created resources:
+```yaml
+metadata:
+  ownerReferences:
+    - apiVersion: "argoproj.io/v1alpha1"
+      kind: "Workflow"
+      name: "{{ workflow.name }}"
+      uid: "{{ workflow.uid }}"
+```
+
 #### Get default values:
 ```bash
 helm show values "argocd/argo-workflows" > default-values.yml
