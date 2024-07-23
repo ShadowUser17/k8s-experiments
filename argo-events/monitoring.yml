@@ -1,0 +1,16 @@
+apiVersion: "monitoring.coreos.com/v1"
+kind: "ServiceMonitor"
+metadata:
+  name: "argo-events-monitor"
+  namespace: "argo-events"
+  labels:
+    release: "prom-operator"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "argo-events-controller-manager-metrics"
+      app.kubernetes.io/instance: "argo-events"
+  endpoints:
+    - port: "metrics"
+      interval: "30s"
+      honorLabels: true

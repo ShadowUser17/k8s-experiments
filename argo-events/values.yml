@@ -1,0 +1,12 @@
+controller:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+      interval: "30s"
+      additionalLabels:
+        release: "prom-operator"
+  podAnnotations: {}
+  resources: {}
+  nodeSelector:
+    kubernetes.io/os: "linux"
