@@ -12,7 +12,7 @@ kubectl apply -f minio-secret.yml
 helm repo add argocd "https://argoproj.github.io/argo-helm" && helm repo update
 ```
 ```bash
-helm upgrade --install argo-workflows "argocd/argo-workflows" -f values.yml -n argo-workflows --version "0.41.7"
+helm upgrade --install argo-workflows "argocd/argo-workflows" -f values.yml -n argo-workflows --version "0.41.11"
 ```
 
 #### Get access:
@@ -50,10 +50,11 @@ helm search repo "argocd/argo-workflows"
 
 #### Get manifests:
 ```bash
-helm template argo-workflows "argocd/argo-workflows" -f values.yml -n argo-workflows --version "0.41.7" > manifests.yml
+helm template argo-workflows "argocd/argo-workflows" -f values.yml -n argo-workflows --version "0.41.11" > manifests.yml
 ```
 
 #### URLs:
 - [Docs](https://argo-workflows.readthedocs.io/en/latest/)
 - [Chart](https://github.com/argoproj/argo-helm/tree/main/charts/argo-workflows)
 - [Metrics](https://argo-workflows.readthedocs.io/en/latest/metrics/)
+- [Examples](https://github.com/argoproj/argo-workflows/tree/main/examples)
