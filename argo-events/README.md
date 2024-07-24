@@ -8,6 +8,9 @@ helm repo add argocd "https://argoproj.github.io/argo-helm" && helm repo update
 ```bash
 helm upgrade --install argo-events "argocd/argo-events" -f values.yml -n argo-events --version "2.4.7"
 ```
+```bash
+kubectl apply -f eventbus.yml
+```
 
 #### Enable monitoring:
 ```bash
