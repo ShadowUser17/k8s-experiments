@@ -36,3 +36,4 @@ helm template argo-events "argocd/argo-events" -f values.yml -n argo-events --ve
 - [Docs](https://argoproj.github.io/argo-events/)
 - [Chart](https://github.com/argoproj/argo-helm/tree/main/charts/argo-events)
 - [Metrics](https://argoproj.github.io/argo-events/metrics/)
+- [Examples](https://github.com/argoproj/argo-events/tree/master/examples)
